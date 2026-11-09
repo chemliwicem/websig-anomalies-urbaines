@@ -1,136 +1,148 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-  <title>Sprint 1 — SIG Mobile · Ben Arous</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <style>
-    :root{--ink:#183431;--muted:#58716b;--green:#176c59;--line:#dbe5df;--paper:#f3f6f0}
-    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:1180px;margin:auto;padding:32px 24px 60px}header{padding:30px 0 28px;border-bottom:1px solid var(--line)}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:750;color:var(--green)}h1{font-size:clamp(30px,5vw,52px);line-height:1.15;letter-spacing:-1.5px;margin:14px 0}h2{font-size:24px;line-height:1.3;margin:0 0 15px}h3{font-size:16px;margin:0 0 8px}p{margin:8px 0 15px}.lead{max-width:740px;color:var(--muted);font-size:18px}.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.chip{border:1px solid var(--line);border-radius:24px;padding:5px 13px;background:white;font-size:13px}.layout{display:grid;grid-template-columns:1.8fr 1fr;gap:24px;margin-top:28px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:24px}.map-card{padding:0;overflow:hidden}.map-title{padding:20px 24px 12px;display:flex;justify-content:space-between;gap:12px;align-items:center}.map-title h2{margin:0;font-size:20px}.tag{font-size:12px;color:var(--green);background:#e8f3ec;padding:4px 9px;border-radius:5px;white-space:nowrap}#map{height:430px;background:#e5ede5}.map-caption{padding:12px 24px;color:var(--muted);font-size:13px}.notice{background:#fff6df;border-left:3px solid #b98216;padding:12px 16px;font-size:14px;margin:0 0 20px}ul,ol{padding-left:22px;margin:8px 0}li{margin:7px 0}.point-list{list-style:none;padding:0}.point-list li{padding:12px 0;border-bottom:1px solid var(--line)}.point-list li:last-child{border:0}.point-list small{display:block;color:var(--muted)}button{font:inherit;cursor:pointer;border:0;background:var(--green);color:white;border-radius:8px;padding:9px 15px}button:hover{background:#104e40}button:focus-visible,a:focus-visible{outline:3px solid #cf9e2d;outline-offset:4px}.point-button{padding:0;background:transparent!important;color:var(--ink);text-align:left;text-decoration:underline;text-underline-offset:4px}.week{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.day{border-top:3px solid var(--green);padding:12px;background:#f5f8f3;font-size:14px}.day b{display:block;margin-bottom:6px}.muted{color:var(--muted);font-size:14px}footer{border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--muted)}a{color:var(--green)}.checks{list-style:'☐  ';padding-left:24px}#feedback{margin:0}#feedback:empty{display:none}
-    @media(max-width:800px){.layout{grid-template-columns:1fr}.week{grid-template-columns:1fr}.map-title{flex-wrap:wrap}#map{height:360px}main{padding:18px 16px 36px}.card{padding:20px}.map-card{padding:0}}
-    @media print{body{background:white}main{max-width:none;padding:0}.layout{display:block}.card{break-inside:avoid}button{display:none}#map{height:300px}.week{grid-template-columns:repeat(5,1fr)}footer{margin-top:20px}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprint 2 | Web SIG — Anomalies urbaines</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--ink:#183431;--muted:#58716b;--green:#176c59;--line:#dbe5df;--paper:#f3f6f0}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,Segoe UI,sans-serif}
+main{max-width:1200px;margin:auto;padding:24px}header{padding:18px 0 25px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(28px,4vw,44px);line-height:1.16;margin:10px 0}h2{font-size:21px;margin:0 0 12px}
+p{margin:8px 0 12px}.eyebrow{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:750;color:var(--green)}
+.lead,.muted{color:var(--muted)}.muted{font-size:14px}.layout{display:grid;grid-template-columns:1.7fr 1fr;gap:20px;margin-top:22px}
+.card{background:white;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px}
+.map-card{padding:0;overflow:hidden}.map-heading{padding:16px 20px 6px}#map{height:440px;background:#e5ede5}
+.map-caption{padding:12px 20px;font-size:13px;color:var(--muted)}
+.notice{background:#fff5da;padding:12px;border-left:3px solid #b98216;font-size:14px}
+.notice:empty{display:none}.field{margin:11px 0}.field label{display:block;font-weight:650;font-size:14px;margin-bottom:4px}
+input,select,textarea{font:inherit;width:100%;border:1px solid #bdcec4;border-radius:7px;padding:9px;background:white;color:var(--ink)}
+textarea{min-height:75px;resize:vertical}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{font:inherit;cursor:pointer;background:var(--green);border:0;color:white;padding:10px 14px;border-radius:7px}
+button.secondary{background:#e5efe9;color:#165343}.buttons{display:flex;gap:8px;flex-wrap:wrap}
+.point-list{list-style:none;padding:0}.point-list li{padding:10px 0;border-bottom:1px solid var(--line)}
+.point-list small{display:block;color:var(--muted)}.point-button{background:transparent;color:var(--ink);padding:0;text-align:left;text-decoration:underline}
+.tag{display:inline-block;background:#e8f3ec;color:var(--green);padding:4px 10px;border-radius:20px;font-size:12px}
+footer{border-top:1px solid var(--line);padding-top:15px;color:var(--muted);font-size:13px}
+a{color:var(--green)}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #cf9e2d;outline-offset:2px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}#map{height:350px}main{padding:15px}}
+</style>
 </head>
 <body>
 <main>
-  <header>
-    <div class="eyebrow">Méthodes Agiles · Mini-projet SIG Mobile</div>
-    <h1>Sprint 1 — Une première carte<br>des anomalies de Ben Arous.</h1>
-    <p class="lead">Créer la base du projet et afficher quelques signalements sur une carte interactive Leaflet. Un premier résultat concret à présenter lors de la revue hebdomadaire.</p>
-    <div class="chips"><span class="chip">Durée : 1 semaine</span><span class="chip">Équipe : binôme</span><span class="chip">Validation prof : à réaliser</span></div>
-  </header>
-
-  <div class="layout">
-    <div>
-      <section class="card map-card" aria-labelledby="map-heading">
-        <div class="map-title"><h2 id="map-heading">Carte des signalements</h2><span class="tag">3 points fictifs</span></div>
-        <p id="feedback" class="notice" role="status" aria-live="polite"></p>
-        <div id="map" aria-label="Carte interactive des anomalies de démonstration à Ben Arous"></div>
-        <div class="map-caption">Données de démonstration intégrées · Version compatible GitHub Pages · Internet est nécessaire pour Leaflet et le fond OpenStreetMap.</div>
-      </section>
-      <section class="card">
-        <h2>Les points de démonstration</h2>
-        <p class="muted">Ces exemples sont fictifs et ne représentent pas des anomalies vérifiées. Sélectionner un titre pour localiser le point sur la carte.</p>
-        <ul class="point-list" id="points"></ul>
-        <button type="button" id="reset">Voir tous les points</button>
-      </section>
-    </div>
-
-    <aside>
-      <section class="card">
-        <div class="eyebrow">01 / Objectif du sprint</div>
-        <h2 style="margin-top:12px">Consulter une première carte</h2>
-        <p>En tant qu’utilisateur, je souhaite visualiser des anomalies géolocalisées afin de connaître leur position et leur description.</p>
-        <h3>Périmètre de cette version</h3>
-        <ul><li>Structure HTML, mise en forme et JavaScript.</li><li>Carte Leaflet centrée sur Ben Arous.</li><li>Trois marqueurs et leurs fiches descriptives.</li><li>Affichage adapté au téléphone.</li></ul>
-        <p class="muted">L’ajout par formulaire est prévu au sprint 2 ; la modification, la recherche, les statuts et les statistiques seront ajoutés dans les sprints suivants.</p>
-      </section>
-      <section class="card">
-        <div class="eyebrow">02 / Livrable</div>
-        <h2 style="margin-top:12px">Un fichier démontrable</h2>
-        <p>Consulter cette page depuis l’adresse GitHub Pages du dépôt. Pour une démonstration locale, lancer <strong>DEMARRER-SPRINT-1.cmd</strong> et ouvrir <a href="http://127.0.0.1:8781/">http://127.0.0.1:8781/</a>. Le descriptif et les données d’exemple sont réunis dans cette page.</p>
-        <p class="muted">Ce prototype autonome couvre la carte du sprint 1. L’intégration de l’API et de MySQL du plan global reste une vérification séparée.</p>
-      </section>
-    </aside>
-  </div>
-
-  <section class="card">
-    <div class="eyebrow">03 / Sprint Backlog proposé</div>
-    <h2 style="margin-top:12px">Organisation de la semaine</h2>
-    <div class="week">
-      <div class="day"><b>Jour 1 · Préparer</b>Planning, objectif partagé, répartition des tâches et structure du projet.</div>
-      <div class="day"><b>Jour 2 · Cartographier</b>Intégrer Leaflet, le fond OpenStreetMap et le cadrage sur Ben Arous.</div>
-      <div class="day"><b>Jour 3 · Localiser</b>Ajouter trois points fictifs et afficher leurs descriptions dans les popups.</div>
-      <div class="day"><b>Jour 4 · Vérifier</b>Contrôler les points, la navigation, l’affichage mobile et les erreurs de chargement.</div>
-      <div class="day"><b>Jour 5 · Présenter</b>Faire la démonstration à la prof, recueillir les retours et tenir la rétrospective.</div>
-    </div>
-    <p class="muted">Chaque jour de travail : point d’équipe de 15 minutes maximum pour suivre l’objectif et identifier les blocages. Ce calendrier est une proposition, pas un historique de travail réalisé.</p>
-  </section>
-
-  <div class="layout" style="margin-top:0">
-    <section class="card">
-      <div class="eyebrow">04 / Critères d’acceptation</div>
-      <h2 style="margin-top:12px">À vérifier avant la revue</h2>
-      <ul class="checks"><li>La page s’ouvre et affiche la carte de Ben Arous.</li><li>Les trois points d’exemple sont visibles.</li><li>Chaque point ouvre une fiche avec son titre, sa description et ses coordonnées.</li><li>Le zoom, le déplacement et le bouton de recentrage fonctionnent.</li><li>La liste descriptive reste lisible si le fond de carte ne charge pas.</li><li>La page reste utilisable sur téléphone.</li></ul>
-      <p class="muted">Definition of Done : critères vérifiés, code relu par le binôme, défauts bloquants corrigés et version présentée identifiée. Les résultats de recette sont à consigner après les essais.</p>
-    </section>
-    <section class="card">
-      <div class="eyebrow">05 / Sprint Review</div>
-      <h2 style="margin-top:12px">Démonstration à la prof</h2>
-      <ol><li>Présenter l’objectif et le périmètre.</li><li>Ouvrir la carte et les trois fiches.</li><li>Montrer le zoom et le recentrage.</li><li>Recueillir les remarques pour le sprint 2.</li></ol>
-      <p><strong>Avis de la prof :</strong> à renseigner après la revue.</p>
-      <p><strong>Rétrospective :</strong> identifier une réussite, un obstacle et une amélioration pour la semaine suivante.</p>
-    </section>
-  </div>
-  <footer>Projet ancien de SIG Mobile repris pour Méthodes Agiles · Prototype pédagogique du sprint 1 · Fond cartographique © OpenStreetMap contributors.</footer>
+<header>
+<div class="eyebrow">ESAT 5GT · Méthodologies agiles · CHEMLI Wicem / NECHI Chaïma</div>
+<h1>Sprint 2 — Déclaration et gestion des anomalies urbaines</h1>
+<p class="lead">Application Web SIG de démonstration : carte Leaflet du Sprint 1 conservée, ajout de signalements géolocalisés (US04), classement par catégorie (US05) et filtrage (US06).</p>
+<span class="tag">Prototype pédagogique — données fictives</span>
+</header>
+<div class="layout">
+<div>
+<section class="card map-card">
+<div class="map-heading"><h2>Carte des anomalies — Ben Arous</h2><p class="muted">Cliquez sur la carte pour remplir automatiquement les coordonnées du formulaire.</p></div>
+<p id="feedback" class="notice" role="status" aria-live="polite"></p>
+<div id="map" aria-label="Carte interactive des signalements fictifs"></div>
+<div class="map-caption">Fond © OpenStreetMap contributors · Leaflet 1.9.4 · Connexion Internet nécessaire pour afficher les tuiles.</div>
+</section>
+<section class="card">
+<h2>Consulter et filtrer les signalements (US06)</h2>
+<div class="field"><label for="filter">Catégorie</label><select id="filter"><option value="Toutes">Toutes les catégories</option><option>Voirie</option><option>Éclairage</option><option>Propreté</option><option>Autre</option></select></div>
+<p id="count" class="muted" aria-live="polite"></p>
+<ul class="point-list" id="points"></ul>
+<div class="buttons"><button type="button" id="reset">Voir tous les points</button><button class="secondary" type="button" id="clear">Effacer mes ajouts fictifs</button></div>
+</section>
+</div>
+<aside>
+<section class="card">
+<div class="eyebrow">US04 et US05</div><h2>Déclarer une anomalie fictive</h2>
+<p class="muted">Les informations ajoutées sont conservées uniquement dans ce navigateur. Aucun signalement n'est transmis à une municipalité.</p>
+<form id="report-form">
+<div class="field"><label for="title">Titre *</label><input id="title" maxlength="90" required placeholder="Ex. Lampadaire défectueux"></div>
+<div class="field"><label for="category">Catégorie *</label><select id="category" required><option>Voirie</option><option>Éclairage</option><option>Propreté</option><option>Autre</option></select></div>
+<div class="field"><label for="description">Description *</label><textarea id="description" maxlength="400" required placeholder="Décrivez un problème fictif"></textarea></div>
+<div class="two">
+<div class="field"><label for="lat">Latitude *</label><input id="lat" type="number" min="-90" max="90" step="any" value="36.735" required></div>
+<div class="field"><label for="lng">Longitude *</label><input id="lng" type="number" min="-180" max="180" step="any" value="10.225" required></div>
+</div>
+<button type="submit">Ajouter le signalement</button>
+<p id="status" class="muted" role="status" aria-live="polite"></p>
+</form>
+</section>
+<section class="card">
+<h2>Fonctionnalités du Sprint 2</h2>
+<ul><li><b>US04 :</b> formulaire, coordonnées et création d'un marqueur.</li><li><b>US05 :</b> catégories Voirie, Éclairage, Propreté, Autre.</li><li><b>US06 :</b> filtrage synchronisé de la liste et des marqueurs.</li></ul>
+<p class="muted">Les trois exemples du Sprint 1, le zoom, les popups, le recentrage et l'affichage mobile sont conservés. Les données ajoutées ne sont pas partagées entre utilisateurs : une base de données sera nécessaire ultérieurement.</p>
+</section>
+</aside>
+</div>
+<section class="card">
+<h2>Critères d'acceptation — à vérifier lors de la revue</h2>
+<ol><li>La carte et les trois anomalies fictives du Sprint 1 s'affichent.</li><li>Le formulaire refuse les champs vides et les coordonnées invalides.</li><li>Une anomalie fictive ajoutée apparaît sur la carte et dans la liste.</li><li>Le clic sur un marqueur affiche titre, catégorie, description et coordonnées.</li><li>Le filtre par catégorie agit sur la carte et sur la liste.</li><li>Après actualisation, les ajouts restent présents dans le même navigateur si le stockage local est disponible.</li><li>L'interface reste utilisable sur smartphone.</li></ol>
+</section>
+<footer>Mini-projet ESAT 5GT — Sprint 2 · Version de démonstration, non destinée à recueillir de vrais signalements.</footer>
 </main>
-<noscript><p class="notice">Activez JavaScript pour afficher la carte et les points interactifs.</p></noscript>
+<noscript>Activez JavaScript pour utiliser la carte et le formulaire.</noscript>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 'use strict';
-const points = [
-  {title:'Exemple 1 — Chaussée dégradée', description:'Dégradation fictive de la chaussée utilisée pour tester la localisation.', lat:36.753, lng:10.222},
-  {title:'Exemple 2 — Éclairage public', description:'Lampadaire fictivement signalé comme défectueux.', lat:36.725, lng:10.205},
-  {title:'Exemple 3 — Dépôt de déchets', description:'Dépôt fictif servant de troisième point de démonstration.', lat:36.733, lng:10.255}
+const KEY='websig-esat-sprint2-v1';
+const CATEGORIES=['Voirie','Éclairage','Propreté','Autre'];
+const EXAMPLES=[
+{title:'Exemple 1 — Chaussée dégradée',description:'Dégradation fictive de la chaussée.',category:'Voirie',lat:36.753,lng:10.222},
+{title:'Exemple 2 — Éclairage public',description:'Lampadaire fictivement défectueux.',category:'Éclairage',lat:36.725,lng:10.205},
+{title:'Exemple 3 — Dépôt de déchets',description:'Dépôt fictif de démonstration.',category:'Propreté',lat:36.733,lng:10.255}
 ];
-let map;
-const markers = [];
-const feedback = document.getElementById('feedback');
-if (location.protocol === 'file:') {
-  feedback.textContent = 'Ouverture directe depuis le disque : OpenStreetMap peut bloquer le fond de carte (403). Lancez DEMARRER-SPRINT-1.cmd puis ouvrez http://127.0.0.1:8781/sprint-1.html.';
-}
-const list = document.getElementById('points');
-points.forEach((point, index) => {
-  const item = document.createElement('li');
-  const button = document.createElement('button');
-  button.type = 'button'; button.className = 'point-button'; button.textContent = point.title;
-  button.addEventListener('click', () => { if(map && markers[index]) { map.setView([point.lat,point.lng],15); markers[index].openPopup(); } else { feedback.textContent = 'Carte indisponible. Les coordonnées restent consultables dans la liste.'; } });
-  const details = document.createElement('small');
-  details.textContent = point.description + ' Coordonnées : ' + point.lat + ', ' + point.lng + '.';
-  item.append(button, details); list.append(item);
+const $=id=>document.getElementById(id);
+const valid=p=>p&&typeof p.title==='string'&&p.title.length<=90&&typeof p.description==='string'&&p.description.length<=400&&CATEGORIES.includes(p.category)&&Number.isFinite(p.lat)&&Math.abs(p.lat)<=90&&Number.isFinite(p.lng)&&Math.abs(p.lng)<=180;
+let added=[],map=null,layer=null;
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(saved))added=saved.filter(valid).slice(0,100);}catch(e){$('status').textContent='Stockage local indisponible.';}
+const all=()=>EXAMPLES.concat(added);
+const visible=()=>all().filter(p=>$('filter').value==='Toutes'||p.category===$('filter').value);
+function save(){try{localStorage.setItem(KEY,JSON.stringify(added));return true;}catch(e){return false;}}
+function render(){
+$('points').replaceChildren();if(layer)layer.clearLayers();
+visible().forEach(p=>{
+const li=document.createElement('li'),button=document.createElement('button'),details=document.createElement('small');
+button.type='button';button.className='point-button';button.textContent=p.title;
+details.textContent=p.category+' · '+p.description+' · '+p.lat.toFixed(5)+', '+p.lng.toFixed(5);
+li.append(button,details);$('points').append(li);
+if(layer){
+const popup=document.createElement('div'),name=document.createElement('strong'),category=document.createElement('p'),desc=document.createElement('p'),coords=document.createElement('small');
+name.textContent=p.title;category.textContent='Catégorie : '+p.category;desc.textContent=p.description;coords.textContent='Latitude : '+p.lat.toFixed(5)+' · Longitude : '+p.lng.toFixed(5);
+popup.append(name,category,desc,coords);
+const marker=L.marker([p.lat,p.lng]).bindPopup(popup).addTo(layer);
+button.addEventListener('click',()=>{map.setView([p.lat,p.lng],15);marker.openPopup();});
+}else button.addEventListener('click',()=>{$('feedback').textContent='Carte indisponible. Coordonnées visibles dans la liste.';});
 });
-document.getElementById('reset').addEventListener('click', () => { if(map) map.fitBounds(points.map(p => [p.lat,p.lng]),{padding:[35,35],maxZoom:13}); });
-if (typeof L === 'undefined') {
-  feedback.textContent = 'La bibliothèque cartographique n’a pas pu être chargée. Vérifiez la connexion Internet. Les points sont consultables dans la liste ci-dessous.';
-} else {
-  map = L.map('map').setView([36.735,10.225],12);
-  const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  });
-  tiles.on('tileerror', () => { feedback.textContent = 'Certaines tuiles du fond de carte sont indisponibles. Vérifiez la connexion Internet ; les points restent consultables dans la liste.'; });
-  tiles.addTo(map);
-  points.forEach(point => {
-    const popup = document.createElement('div');
-    const title = document.createElement('strong'); title.textContent = point.title;
-    const text = document.createElement('p'); text.textContent = point.description;
-    const coords = document.createElement('small'); coords.textContent = 'Latitude : ' + point.lat + ' · Longitude : ' + point.lng;
-    popup.append(title,text,coords);
-    markers.push(L.marker([point.lat,point.lng]).addTo(map).bindPopup(popup));
-  });
-  map.fitBounds(points.map(p => [p.lat,p.lng]),{padding:[35,35],maxZoom:13});
+$('count').textContent=visible().length+' signalement(s) affiché(s) sur '+all().length+'.';
 }
+function recenter(){if(!map)return;const p=visible();if(p.length)map.fitBounds(p.map(x=>[x.lat,x.lng]),{padding:[35,35],maxZoom:13});else map.setView([36.735,10.225],12);}
+$('filter').addEventListener('change',()=>{render();recenter();});
+$('reset').addEventListener('click',()=>{$('filter').value='Toutes';render();recenter();});
+$('clear').addEventListener('click',()=>{
+if(!confirm('Supprimer les signalements fictifs ajoutés dans ce navigateur ?'))return;
+added=[];save();render();recenter();$('status').textContent='Ajouts locaux effacés. Les trois exemples initiaux sont conservés.';
+});
+$('report-form').addEventListener('submit',e=>{
+e.preventDefault();
+const p={title:$('title').value.trim(),category:$('category').value,description:$('description').value.trim(),lat:Number($('lat').value),lng:Number($('lng').value)};
+if(!p.title||!p.description||!valid(p)){$('status').textContent='Veuillez renseigner des champs et coordonnées valides.';return;}
+if(added.length>=100){$('status').textContent='Limite de 100 ajouts locaux atteinte.';return;}
+added.push(p);const persisted=save();$('filter').value='Toutes';render();
+if(map){map.setView([p.lat,p.lng],15);layer.eachLayer(marker=>{const ll=marker.getLatLng();if(ll.lat===p.lat&&ll.lng===p.lng)marker.openPopup();});}
+$('status').textContent=persisted?'Signalement fictif ajouté et enregistré localement.':'Signalement ajouté, mais stockage local indisponible.';
+e.target.reset();
+});
+if(typeof L==='undefined'){$('feedback').textContent='Impossible de charger Leaflet. Vérifiez la connexion Internet.';}
+else{
+map=L.map('map').setView([36.735,10.225],12);
+const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'});
+tiles.on('tileerror',()=>{$('feedback').textContent='Certaines tuiles OpenStreetMap ne sont pas disponibles.';});
+tiles.addTo(map);layer=L.layerGroup().addTo(map);
+map.on('click',e=>{$('lat').value=e.latlng.lat.toFixed(6);$('lng').value=e.latlng.lng.toFixed(6);$('status').textContent='Coordonnées sélectionnées sur la carte.';});
+}
+render();recenter();
 </script>
 </body>
 </html>
