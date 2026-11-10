@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sprint 2 | Web SIG — Anomalies urbaines</title>
+<title>Sprint 3 | Web SIG — Anomalies urbaines</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{--ink:#183431;--muted:#58716b;--green:#176c59;--line:#dbe5df;--paper:#f3f6f0}
@@ -20,23 +20,24 @@ p{margin:8px 0 12px}.eyebrow{font-size:12px;letter-spacing:1.5px;text-transform:
 input,select,textarea{font:inherit;width:100%;border:1px solid #bdcec4;border-radius:7px;padding:9px;background:white;color:var(--ink)}
 textarea{min-height:75px;resize:vertical}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 button{font:inherit;cursor:pointer;background:var(--green);border:0;color:white;padding:10px 14px;border-radius:7px}
-button.secondary{background:#e5efe9;color:#165343}.buttons{display:flex;gap:8px;flex-wrap:wrap}
+button.edit{background:#e5efe9;color:#165343;padding:5px 10px;font-size:13px;margin-top:6px}button.secondary{background:#e5efe9;color:#165343}.buttons{display:flex;gap:8px;flex-wrap:wrap}
 .point-list{list-style:none;padding:0}.point-list li{padding:10px 0;border-bottom:1px solid var(--line)}
 .point-list small{display:block;color:var(--muted)}.point-button{background:transparent;color:var(--ink);padding:0;text-align:left;text-decoration:underline}
 .tag{display:inline-block;background:#e8f3ec;color:var(--green);padding:4px 10px;border-radius:20px;font-size:12px}
 footer{border-top:1px solid var(--line);padding-top:15px;color:var(--muted);font-size:13px}
 a{color:var(--green)}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #cf9e2d;outline-offset:2px}
-@media(max-width:800px){.layout{grid-template-columns:1fr}#map{height:350px}main{padding:15px}}
+@media(max-width:800px){.layout{grid-template-columns:1fr}#map{height:350px}main{padding:15px}.card{padding:15px}.two{grid-template-columns:1fr}button{min-height:42px}}
 </style>
 </head>
 <body>
 <main>
 <header>
 <div class="eyebrow">ESAT 5GT · Méthodologies agiles · CHEMLI Wicem / NECHI Chaïma</div>
-<h1>Sprint 2 — Déclaration et gestion des anomalies urbaines</h1>
-<p class="lead">Application Web SIG de démonstration : carte Leaflet du Sprint 1 conservée, ajout de signalements géolocalisés (US04), classement par catégorie (US05) et filtrage (US06).</p>
+<h1>Sprint 3 — Modification et statistiques des anomalies urbaines</h1>
+<p class="lead">Application Web SIG évolutive : fonctionnalités des Sprints 1 et 2 conservées, modification des signalements (US07), statistiques (US08) et adaptation mobile (US09).</p>
 <span class="tag">Prototype pédagogique — données fictives</span>
 </header>
+<section class="card"><div class="eyebrow">Sprint 3 · US08</div><h2>Tableau de bord des anomalies</h2><p id="stats-total" class="muted"></p><div id="stats" aria-label="Statistiques par catégorie"></div></section>
 <div class="layout">
 <div>
 <section class="card map-card">
@@ -65,22 +66,22 @@ a{color:var(--green)}button:focus-visible,input:focus-visible,select:focus-visib
 <div class="field"><label for="lat">Latitude *</label><input id="lat" type="number" min="-90" max="90" step="any" value="36.735" required></div>
 <div class="field"><label for="lng">Longitude *</label><input id="lng" type="number" min="-180" max="180" step="any" value="10.225" required></div>
 </div>
-<button type="submit">Ajouter le signalement</button>
+<div class="buttons"><button id="submit-report" type="submit">Ajouter le signalement</button><button id="cancel-edit" class="secondary" type="button" hidden>Annuler la modification</button></div>
 <p id="status" class="muted" role="status" aria-live="polite"></p>
 </form>
 </section>
 <section class="card">
-<h2>Fonctionnalités du Sprint 2</h2>
-<ul><li><b>US04 :</b> formulaire, coordonnées et création d'un marqueur.</li><li><b>US05 :</b> catégories Voirie, Éclairage, Propreté, Autre.</li><li><b>US06 :</b> filtrage synchronisé de la liste et des marqueurs.</li></ul>
-<p class="muted">Les trois exemples du Sprint 1, le zoom, les popups, le recentrage et l'affichage mobile sont conservés. Les données ajoutées ne sont pas partagées entre utilisateurs : une base de données sera nécessaire ultérieurement.</p>
+<h2>Fonctionnalités du Sprint 3</h2>
+<ul><li><b>US07 :</b> modification des anomalies fictives ajoutées localement.</li><li><b>US08 :</b> tableau de bord par catégorie, actualisé automatiquement.</li><li><b>US09 :</b> interface responsive pour téléphone.</li></ul>
+<p class="muted">Les fonctionnalités des Sprints 1 et 2 sont conservées. Les trois exemples initiaux sont en lecture seule ; les ajouts locaux sont modifiables. Les données ajoutées ne sont pas partagées entre utilisateurs : une base de données sera nécessaire ultérieurement.</p>
 </section>
 </aside>
 </div>
 <section class="card">
-<h2>Critères d'acceptation — à vérifier lors de la revue</h2>
-<ol><li>La carte et les trois anomalies fictives du Sprint 1 s'affichent.</li><li>Le formulaire refuse les champs vides et les coordonnées invalides.</li><li>Une anomalie fictive ajoutée apparaît sur la carte et dans la liste.</li><li>Le clic sur un marqueur affiche titre, catégorie, description et coordonnées.</li><li>Le filtre par catégorie agit sur la carte et sur la liste.</li><li>Après actualisation, les ajouts restent présents dans le même navigateur si le stockage local est disponible.</li><li>L'interface reste utilisable sur smartphone.</li></ol>
+<h2>Critères d'acceptation du Sprint 3 — à vérifier lors de la revue</h2>
+<ol><li>La carte et les trois anomalies fictives du Sprint 1 s'affichent.</li><li>Le formulaire refuse les champs vides et les coordonnées invalides.</li><li>Une anomalie fictive ajoutée apparaît sur la carte et dans la liste.</li><li>Le clic sur un marqueur affiche titre, catégorie, description et coordonnées.</li><li>Le filtre par catégorie agit sur la carte et sur la liste.</li><li>Après actualisation, les ajouts restent présents dans le même navigateur si le stockage local est disponible.</li><li>Les anomalies ajoutées localement peuvent être modifiées, puis sauvegardées.</li><li>Le tableau de bord reflète les ajouts et les modifications de catégories.</li><li>L'interface reste utilisable sur smartphone.</li></ol>
 </section>
-<footer>Mini-projet ESAT 5GT — Sprint 2 · Version de démonstration, non destinée à recueillir de vrais signalements.</footer>
+<footer>Mini-projet ESAT 5GT — Sprint 3 · Version de démonstration, non destinée à recueillir de vrais signalements.</footer>
 </main>
 <noscript>Activez JavaScript pour utiliser la carte et le formulaire.</noscript>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -95,7 +96,7 @@ const EXAMPLES=[
 ];
 const $=id=>document.getElementById(id);
 const valid=p=>p&&typeof p.title==='string'&&p.title.length<=90&&typeof p.description==='string'&&p.description.length<=400&&CATEGORIES.includes(p.category)&&Number.isFinite(p.lat)&&Math.abs(p.lat)<=90&&Number.isFinite(p.lng)&&Math.abs(p.lng)<=180;
-let added=[],map=null,layer=null;
+let added=[],map=null,layer=null,editingIndex=null;
 try{const saved=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(saved))added=saved.filter(valid).slice(0,100);}catch(e){$('status').textContent='Stockage local indisponible.';}
 const all=()=>EXAMPLES.concat(added);
 const visible=()=>all().filter(p=>$('filter').value==='Toutes'||p.category===$('filter').value);
@@ -106,7 +107,10 @@ visible().forEach(p=>{
 const li=document.createElement('li'),button=document.createElement('button'),details=document.createElement('small');
 button.type='button';button.className='point-button';button.textContent=p.title;
 details.textContent=p.category+' · '+p.description+' · '+p.lat.toFixed(5)+', '+p.lng.toFixed(5);
-li.append(button,details);$('points').append(li);
+li.append(button,details);
+const idx=added.indexOf(p);
+if(idx>=0){const edit=document.createElement('button');edit.type='button';edit.className='edit';edit.textContent='Modifier ce signalement (US07)';edit.addEventListener('click',()=>beginEdit(idx));li.append(edit);}
+$('points').append(li);
 if(layer){
 const popup=document.createElement('div'),name=document.createElement('strong'),category=document.createElement('p'),desc=document.createElement('p'),coords=document.createElement('small');
 name.textContent=p.title;category.textContent='Catégorie : '+p.category;desc.textContent=p.description;coords.textContent='Latitude : '+p.lat.toFixed(5)+' · Longitude : '+p.lng.toFixed(5);
@@ -115,8 +119,29 @@ const marker=L.marker([p.lat,p.lng]).bindPopup(popup).addTo(layer);
 button.addEventListener('click',()=>{map.setView([p.lat,p.lng],15);marker.openPopup();});
 }else button.addEventListener('click',()=>{$('feedback').textContent='Carte indisponible. Coordonnées visibles dans la liste.';});
 });
-$('count').textContent=visible().length+' signalement(s) affiché(s) sur '+all().length+'.';
+$('count').textContent=visible().length+' signalement(s) affiché(s) sur '+all().length+'.';renderStats();
 }
+function renderStats(){
+ const data=all();$('stats-total').textContent=data.length+' signalement(s) fictif(s) au total, dont '+added.length+' ajout(s) local(aux).';
+ const holder=$('stats');holder.replaceChildren();
+ CATEGORIES.forEach(cat=>{const n=data.filter(p=>p.category===cat).length;
+ const wrap=document.createElement('div');wrap.style.margin='9px 0';
+ const label=document.createElement('div');label.textContent=cat+' : '+n+' ('+(data.length?Math.round(n/data.length*100):0)+' %)';
+ const track=document.createElement('div');track.style.cssText='height:12px;border-radius:8px;background:#e6eee8;overflow:hidden';
+ const bar=document.createElement('div');bar.style.cssText='height:100%;background:#176c59;width:'+(data.length?n/data.length*100:0)+'%';
+ track.append(bar);wrap.append(label,track);holder.append(wrap);
+ });
+}
+function beginEdit(index){
+ const p=added[index];if(!p)return;editingIndex=index;
+ $('title').value=p.title;$('category').value=p.category;$('description').value=p.description;
+ $('lat').value=p.lat;$('lng').value=p.lng;
+ $('submit-report').textContent='Enregistrer les modifications';$('cancel-edit').hidden=false;
+ $('status').textContent='Modification du signalement fictif sélectionné.';
+ $('report-form').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function cancelEdit(){editingIndex=null;$('report-form').reset();$('submit-report').textContent='Ajouter le signalement';$('cancel-edit').hidden=true;}
+$('cancel-edit').addEventListener('click',()=>{cancelEdit();$('status').textContent='Modification annulée.';});
 function recenter(){if(!map)return;const p=visible();if(p.length)map.fitBounds(p.map(x=>[x.lat,x.lng]),{padding:[35,35],maxZoom:13});else map.setView([36.735,10.225],12);}
 $('filter').addEventListener('change',()=>{render();recenter();});
 $('reset').addEventListener('click',()=>{$('filter').value='Toutes';render();recenter();});
@@ -128,11 +153,12 @@ $('report-form').addEventListener('submit',e=>{
 e.preventDefault();
 const p={title:$('title').value.trim(),category:$('category').value,description:$('description').value.trim(),lat:Number($('lat').value),lng:Number($('lng').value)};
 if(!p.title||!p.description||!valid(p)){$('status').textContent='Veuillez renseigner des champs et coordonnées valides.';return;}
-if(added.length>=100){$('status').textContent='Limite de 100 ajouts locaux atteinte.';return;}
-added.push(p);const persisted=save();$('filter').value='Toutes';render();
+if(editingIndex===null&&added.length>=100){$('status').textContent='Limite de 100 ajouts locaux atteinte.';return;}
+const wasEditing=editingIndex!==null;
+if(wasEditing)added[editingIndex]=p;else added.push(p);
+const persisted=save();$('filter').value='Toutes';render();
 if(map){map.setView([p.lat,p.lng],15);layer.eachLayer(marker=>{const ll=marker.getLatLng();if(ll.lat===p.lat&&ll.lng===p.lng)marker.openPopup();});}
-$('status').textContent=persisted?'Signalement fictif ajouté et enregistré localement.':'Signalement ajouté, mais stockage local indisponible.';
-e.target.reset();
+cancelEdit();$('status').textContent=persisted?(wasEditing?'Signalement modifié et sauvegardé localement.':'Signalement fictif ajouté et enregistré localement.'):'Modification effectuée en mémoire, stockage local indisponible.';
 });
 if(typeof L==='undefined'){$('feedback').textContent='Impossible de charger Leaflet. Vérifiez la connexion Internet.';}
 else{
